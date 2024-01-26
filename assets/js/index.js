@@ -4,9 +4,17 @@ const inputText = document.getElementById("text-statistics");
 formStatistics.addEventListener('submit', function (e) {
     e.preventDefault();
     const words = inputText.value;
-    calculateStatistics(words.split(/\s+/));
+    calculateStatistics(splitWords(words));
 });
 
+function splitWords(input) {
+    return input.split(' ').filter(word => word.trim() !== '' && !isPunctuation(word)).map(word => word.toLowerCase());
+}
+
+function isPunctuation(word) {
+    const punctuationMarks = [',', '.', ';', '!', '?'];
+    return punctuationMarks.includes(word);
+}
 
 function calculateStatistics(words) {
     const uniqueWords = new Set(words);
@@ -21,7 +29,6 @@ function calculateStatistics(words) {
 
     displayStatistics(uniqueWords.size, wordCountMap);
 }
-
 function displayStatistics(uniqueWordsCount, wordCountMap) {
     const resultContainer = document.getElementById("statistics-result");
     resultContainer.innerHTML = "Унікальних слів: " + uniqueWordsCount + "<br>";
